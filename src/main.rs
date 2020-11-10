@@ -30,13 +30,14 @@ fn main() {
     //  * Write the disemvoweled text using write_file
 
     // Replace String::from("test") with what you get from read_file
-    let s = String::from("dummy text");
+    let filePath = Path::new(&args[1]);
+    let s = read_file(filePath);
 
     let s_disemvowel = disemvowel(&s);
 
     // Use command-line arguments for the name of the file,
     // and s_disemvowel for the text to write out.
-    write_file(Path::new("dummy.txt"), "output string");
+    write_file(Path::new(&args[2]), disemvowel());
 }
 
 fn read_file(path: &Path) -> String {
@@ -46,9 +47,37 @@ fn write_file(path: &Path, s: &str) {
     fs::write(path, s).expect("Unable to write file");
 }
 
+fn is_vowel(x: char) -> bool {
+    
+    if      x == 'a' ||
+            x == 'e' ||
+            x == 'i' ||
+            x == 'o' ||
+            x == 'u' ||
+            x == 'A' ||
+            x == 'E' ||
+            x == 'I' ||
+            x == 'O' ||
+            x == 'U' 
+     { 
+    return true;
+    } else {
+        return false;
+    }
+}
+
 //TODO: Return the input string without vowels.
 fn disemvowel(s: &str) -> String {
-    String::from(s)
+    let resultString: String;
+    
+    
+    for line in s.chars() {
+        if !is_vowel(line){
+            resultString = resultString + line;
+        }
+    }
+
+    String::from(resultString)
 }
 
 // Everything from here down is Rust test code. You shouldn't need to
