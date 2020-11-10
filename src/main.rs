@@ -13,10 +13,16 @@ fn main() {
     // both file names. The first should be the name of a file
     // containing the text to disemvowel, and the second should
     // be the file we want to write the disemvoweled text to.
+
+    // Taking care of the command line arguments. This works as an iterator that yields a string for each argument.
     let args: Vec<String> = env::args().collect();
 
     //TODO: Panic if not enough arguments are provided
-    //Panic should output the string "Not enough arguments"
+    if args.len() != 3 {
+        //Panic should output the string "Not enough arguments"
+        panic!("Not enough arguments");
+    }
+    
 
     //TODO: 
     //  * Pass an argument to read_file to read the original text
