@@ -13,10 +13,16 @@ fn main() {
     // both file names. The first should be the name of a file
     // containing the text to disemvowel, and the second should
     // be the file we want to write the disemvoweled text to.
+
+    // Taking care of the command line arguments. This works as an iterator that yields a string for each argument.
     let args: Vec<String> = env::args().collect();
 
     //TODO: Panic if not enough arguments are provided
-    //Panic should output the string "Not enough arguments"
+    if args.len() != 3 {
+        //Panic should output the string "Not enough arguments"
+        panic!("Not enough arguments");
+    }
+    
 
     //TODO: 
     //  * Pass an argument to read_file to read the original text
@@ -24,13 +30,14 @@ fn main() {
     //  * Write the disemvoweled text using write_file
 
     // Replace String::from("test") with what you get from read_file
-    let s = String::from("dummy text");
+    let filePath = Path::new(&args[1]);
+    let s = read_file(filePath);
 
     let s_disemvowel = disemvowel(&s);
 
     // Use command-line arguments for the name of the file,
     // and s_disemvowel for the text to write out.
-    write_file(Path::new("dummy.txt"), "output string");
+    write_file(Path::new(&args[2]), &s_disemvowel);
 }
 
 fn read_file(path: &Path) -> String {
@@ -40,9 +47,39 @@ fn write_file(path: &Path, s: &str) {
     fs::write(path, s).expect("Unable to write file");
 }
 
+fn is_vowel(x: char) -> bool {
+    
+    if      x == 'a' ||
+            x == 'e' ||
+            x == 'i' ||
+            x == 'o' ||
+            x == 'u' ||
+            x == 'A' ||
+            x == 'E' ||
+            x == 'I' ||
+            x == 'O' ||
+            x == 'U' 
+     { 
+    return true;
+    } else {
+        return false;
+    }
+}
+
 //TODO: Return the input string without vowels.
 fn disemvowel(s: &str) -> String {
-    String::from(s)
+    
+    //let resultString: String;
+    let mut result_string = String::new();
+
+    for line in s.chars() {
+        if !is_vowel(line){
+            //resultString = resultString + line;
+            result_string.push(line);
+        }
+    }
+
+    String::from(result_string)
 }
 
 // Everything from here down is Rust test code. You shouldn't need to
@@ -113,7 +150,7 @@ mod tests {
         use super::*;
         #[test]
         fn requires_two_arguments() {
-            let mut cmd = Command::cargo_bin("rust-disemvowel").unwrap();
+            let mut cmd = Command::cargo_bin("disemvowel-in-rust").unwrap();
             cmd.arg("1");
             cmd.assert()
                 .failure()
@@ -121,7 +158,7 @@ mod tests {
         }
         #[test]
         fn requires_read_file() {
-            let mut cmd = Command::cargo_bin("rust-disemvowel").unwrap();
+            let mut cmd = Command::cargo_bin("disemvowel-in-rust").unwrap();
             cmd.arg("/this/path/does/not/exist")
                 .arg("output/path/doesnt/matter");
             cmd.assert()
