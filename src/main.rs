@@ -68,16 +68,18 @@ fn is_vowel(x: char) -> bool {
 
 //TODO: Return the input string without vowels.
 fn disemvowel(s: &str) -> String {
-    let resultString: String;
     
-    
+    //let resultString: String;
+    let mut result_string = String::new();
+
     for line in s.chars() {
         if !is_vowel(line){
-            resultString = resultString + line;
+            //resultString = resultString + line;
+            result_string.push(line);
         }
     }
 
-    String::from(resultString)
+    String::from(result_string)
 }
 
 // Everything from here down is Rust test code. You shouldn't need to
@@ -148,7 +150,7 @@ mod tests {
         use super::*;
         #[test]
         fn requires_two_arguments() {
-            let mut cmd = Command::cargo_bin("rust-disemvowel").unwrap();
+            let mut cmd = Command::cargo_bin("disemvowel-in-rust").unwrap();
             cmd.arg("1");
             cmd.assert()
                 .failure()
@@ -156,7 +158,7 @@ mod tests {
         }
         #[test]
         fn requires_read_file() {
-            let mut cmd = Command::cargo_bin("rust-disemvowel").unwrap();
+            let mut cmd = Command::cargo_bin("disemvowel-in-rust").unwrap();
             cmd.arg("/this/path/does/not/exist")
                 .arg("output/path/doesnt/matter");
             cmd.assert()
